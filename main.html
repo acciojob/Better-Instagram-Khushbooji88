@@ -1,22 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <script src="script.js " defer></script>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
-    <title>Better Instagram</title>
-  </head>
-  <body>
-    <h1 style="text-align: center">Arrange Images by drag and drop</h1>
-    <div class="flex" id="parent">
-      <div draggable="true" class="image" >Image 1</div>
-      <div draggable="true" class="image" >Image 2</div>
-      <div draggable="true" class="image" >Image 3</div>
-      <div draggable="true" class="image" >Image 4</div>
-      <div draggable="true" class="image" >Image 5</div>
-      <div draggable="true" class="image" >Image 6</div>
-    </div>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Better Instagram</title>
+  <style>
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 300px;
+      margin: auto;
+    }
+    .image-div {
+      width: 100px;
+      height: 100px;
+      background-size: cover;
+      background-position: center;
+      border: 2px solid #ccc;
+      cursor: grab;
+    }
+    .image-div:active {
+      cursor: grabbing;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center;">Arrange Images by Drag and Drop</h1>
+  <div id="grid">
+    <div id="div1" class="image-div" draggable="true" style="background-image: url('https://picsum.photos/id/237/200/300');"></div>
+    <div id="div2" class="image-div" draggable="true" style="background-image: url('https://picsum.photos/seed/picsum/200/300');"></div>
+    <div id="div3" class="image-div" draggable="true" style="background-image: url('https://picsum.photos/200/300?grayscale');"></div>
+    <div id="div4" class="image-div" draggable="true" style="background-image: url('https://picsum.photos/200/300/');"></div>
+    <div id="div5" class="image-div" draggable="true" style="background-image: url('https://picsum.photos/200/300.jpg');"></div>
+    <div id="div6" class="image-div" draggable="true" style="background-image: url('https://picsum.photos/id/102/200/300');"></div>
+  </div>
+
+  <script>
+    const grid = document.getElementById('grid');
+    let draggedElement = null;
+
+    grid.addEventListener('dragstart', (e) => {
+      if (e.target.classList.contains('image-div')) {
+        draggedElement = e.target;
+      }
+    });
+
+    grid.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+
+    grid.addEventListener('drop', (e) => {
+      if (e.target.classList.contains('image-div') && draggedElement) {
+        // Swap background images
+        const tempBg = draggedElement.style.backgroundImage;
+        draggedElement.style.backgroundImage = e.target.style.backgroundImage;
+        e.target.style.backgroundImage = tempBg;
+
+        draggedElement = null; // Reset dragged element
+      }
+    });
+  </script>
+</body>
 </html>
+
